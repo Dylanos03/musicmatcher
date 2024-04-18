@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { searchRes } from "~/app/page";
 
 import {
   createTRPCRouter,

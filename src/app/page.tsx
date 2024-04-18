@@ -1,26 +1,26 @@
+import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 
-export type searchRes = {
-  tracks: {
-    items: Track[];
-  };
-};
-
-type Track = {
-  name: string;
-};
-
 export default async function Home() {
   const session = await getServerAuthSession();
-  const data: searchRes = await api.spotify.search("Never Gonna Give You Up");
 
   return (
-    <main className="bg-background text-foreground flex min-h-screen flex-col items-center gap-4 p-2">
+    <main className="bg-background text-foreground flex min-h-svh flex-col items-center gap-4 p-2">
       <h1 className="text-3xl font-bold">Music Matcher</h1>
-      {data?.tracks.items.map((track, index) => {
-        return <div key={track.name + index}>{track.name}</div>;
-      })}
+      <p className="text-center">
+        {session ? (
+          <>Welcome, {session.user.name}! You are now authenticated.</>
+        ) : (
+          <>You are not authenticated.</>
+        )}
+      </p>
+      <Link
+        href={session ? "/api/auth/signout" : "/api/auth/signin"}
+        className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+      >
+        {session ? "Sign out" : "Sign in"}
+      </Link>
     </main>
   );
 }
