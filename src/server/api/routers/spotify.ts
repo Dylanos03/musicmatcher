@@ -62,7 +62,8 @@ export const spotifyRouter = createTRPCRouter({
         },
       },
     );
-    const data: SpotifySearchResult = await result.json();
+    const data: SpotifySearchResult =
+      (await result.json()) as SpotifySearchResult;
     return data;
   }),
 });
