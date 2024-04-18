@@ -18,10 +18,9 @@ export default async function Home() {
   return (
     <main className="bg-background text-foreground flex min-h-screen flex-col items-center gap-4 p-2">
       <h1 className="text-3xl font-bold">Music Matcher</h1>
-      {data &&
-        data.tracks.items.map((track) => {
-          return <div>{track.name}</div>;
-        })}
+      {data?.tracks.items.map((track, index) => {
+        return <div key={track.name + index}>{track.name}</div>;
+      })}
     </main>
   );
 }
