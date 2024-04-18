@@ -14,6 +14,16 @@ interface SpotifyTokenResponse {
   scope: string;
 }
 
+interface SpotifySearchResult {
+  // Define the properties of the search result here
+  tracks: {
+    items: {
+      name: string;
+      // Add more properties as needed
+    }[];
+  };
+}
+
 export const spotifyRouter = createTRPCRouter({
   search: publicProcedure.input(z.string()).query(async ({ input }) => {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
@@ -30,7 +40,8 @@ export const spotifyRouter = createTRPCRouter({
         body: "grant_type=client_credentials",
       });
 
-      const data: SpotifyTokenResponse = await response.json();
+      const data: SpotifyTokenResponse =
+        (await response.json()) as SpotifyTokenResponse;
       console.log(data);
       return data.access_token;
     }
@@ -51,7 +62,7 @@ export const spotifyRouter = createTRPCRouter({
         },
       },
     );
-    const data: searchRes = await result.json();
+    const data: SpotifySearchResult = await result.json();
     return data;
   }),
 });
