@@ -25,8 +25,8 @@ function SearchPage({ session }: { session: Session }) {
   });
 
   const { step, next, back, isFirstPage, isLastPage } = usePaginatedForm([
-    <PickGenre setValue={setValue} />,
-    <PickHashtag setValue={setValue} />,
+    <PickGenre key={"genre"} setValue={setValue} />,
+    <PickHashtag key={"hashtag"} setValue={setValue} />,
   ]);
   const updatePref = api.profile.updateSearch.useMutation({
     onSuccess: () => {
