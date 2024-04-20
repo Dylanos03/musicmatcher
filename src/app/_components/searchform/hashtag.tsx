@@ -21,10 +21,10 @@ function HashBtn({
     <button
       onClick={handleClick}
       className={
-        "rounded-xl  p-2 text-sm  lg:text-lg " +
+        "rounded-xl border-2 border-foreground p-2 text-sm  lg:text-lg " +
         (selected
           ? " bg-foreground text-background"
-          : "border-2 border-foreground bg-background text-foreground")
+          : " bg-background text-foreground")
       }
     >
       {`#${genre}`}
