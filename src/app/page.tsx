@@ -6,7 +6,7 @@ export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
-    <main className="bg-background text-foreground flex min-h-svh flex-col items-center gap-4 p-2">
+    <main className="flex min-h-svh flex-col items-center gap-4 bg-background p-2 text-foreground">
       <h1 className="text-3xl font-bold">Music Matcher</h1>
       <p className="text-center">
         {session ? (
