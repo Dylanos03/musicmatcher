@@ -1,6 +1,9 @@
 import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { spotifyRouter } from "./routers/spotify";
+import { genreRouter } from "./routers/genre";
+import { hashtagRouter } from "./routers/hashtag";
+import { profileRouter } from "./routers/profile";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +13,9 @@ import { spotifyRouter } from "./routers/spotify";
 export const appRouter = createTRPCRouter({
   post: postRouter,
   spotify: spotifyRouter,
+  genres: genreRouter,
+  hashtag: hashtagRouter,
+  profile: profileRouter,
 });
 
 // export type definition of API
