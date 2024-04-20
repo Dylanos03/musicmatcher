@@ -13,7 +13,10 @@ datasource db {
 
 model Post {
     id        Int      @id @default(autoincrement())
-    name      String
+    songName  String
+    artist    String[]
+    artwork   String
+    url       String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -22,7 +25,7 @@ model Post {
     hashtags    Hashtag[]
     genres      Genre[]
 
-    @@index([name])
+    @@index([songName])
 }
 
 // Necessary for Next auth
