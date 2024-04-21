@@ -7,11 +7,7 @@ async function AddSongPage() {
   if (!session) {
     redirect("/api/auth/signin");
   }
-  return (
-    <main className="flex min-h-svh flex-col items-center justify-center gap-4 bg-background p-2 text-foreground">
-      <SongPage session={session} />
-    </main>
-  );
+  return <SongPage session={session} />;
 }
 
 export default AddSongPage;

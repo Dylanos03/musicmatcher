@@ -6,4 +6,68 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-export const postRouter = createTRPCRouter({});
+export const postRouter = createTRPCRouter({
+  create: publicProcedure
+    .input(
+      z.object({
+        songName: z.string(),
+        artists: z.array(z.string()),
+        art: z.string(),
+        genre: z.string(),
+        hashtag: z.array(z.string()),
+        postedBy: z.string(),
+        href: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          id: input.postedBy,
+        },
+      });
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const hashtags = [];
+
+      const genres = await ctx.db.genre.findFirst({
+        where: { name: input.genre },
+      });
+
+      if (!genres) {
+        throw new Error("Genre not found");
+      }
+
+      for (const hashtag of input.hashtag) {
+        const foundHashtag = await ctx.db.hashtag.findFirst({
+          where: { name: hashtag },
+        });
+        if (!foundHashtag) {
+          throw new Error("Hashtag not found");
+        }
+        hashtags.push(foundHashtag);
+      }
+
+      return await ctx.db.post.create({
+        data: {
+          songName: input.songName,
+          artist: input.artists,
+          artwork: input.art,
+
+          hashtags: {
+            connect: hashtags,
+          },
+          genre: {
+            connect: {
+              id: genres.id,
+            },
+          },
+          createdBy: {
+            connect: user,
+          },
+          url: input.href,
+        },
+      });
+    }),
+});

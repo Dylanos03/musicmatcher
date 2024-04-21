@@ -23,7 +23,9 @@ model Post {
     createdBy   User      @relation(fields: [createdById], references: [id])
     createdById String
     hashtags    Hashtag[]
-    genres      Genre[]
+
+    genreId Int
+    genre   Genre @relation(fields: [genreId], references: [id])
 
     @@index([songName])
 }
@@ -57,10 +59,10 @@ model Session {
 
 model User {
     id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
+    name          String
+    email         String    @unique
     emailVerified DateTime?
-    image         String?
+    image         String
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
@@ -85,6 +87,8 @@ model Hashtag {
 
     posts Post[]
     users User[]
+
+    @@index([name])
 }
 
 model Genre {
@@ -95,4 +99,6 @@ model Genre {
 
     posts Post[]
     users User[]
+
+    @@index([name])
 }

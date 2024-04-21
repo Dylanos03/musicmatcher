@@ -14,11 +14,21 @@ interface SpotifyTokenResponse {
 }
 
 interface SpotifySearchResult {
-  // Define the properties of the search result here
   tracks: {
     items: {
+      id: string;
       name: string;
-      // Add more properties as needed
+      artists: {
+        name: string;
+      }[];
+      external_urls: {
+        spotify: string;
+      };
+      album: {
+        images: {
+          url: string;
+        }[];
+      };
     }[];
   };
 }
@@ -41,7 +51,7 @@ export const spotifyRouter = createTRPCRouter({
 
       const data: SpotifyTokenResponse =
         (await response.json()) as SpotifyTokenResponse;
-      console.log(data);
+
       return data.access_token;
     }
 
@@ -63,6 +73,16 @@ export const spotifyRouter = createTRPCRouter({
     );
     const data: SpotifySearchResult =
       (await result.json()) as SpotifySearchResult;
-    return data;
+
+    const returnData = data.tracks.items.map((track) => {
+      return {
+        id: track.id,
+        name: track.name,
+        artists: track.artists.map((artist) => artist.name),
+        image: track.album.images[0]?.url,
+        link: track.external_urls.spotify,
+      };
+    });
+    return returnData;
   }),
 });
