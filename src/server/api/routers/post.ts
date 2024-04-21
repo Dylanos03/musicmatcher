@@ -70,4 +70,70 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+
+  getAllByPref: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          id: input,
+        },
+        include: {
+          genres: true,
+          hashtags: true,
+        },
+      });
+
+      if (!user) {
+        return await ctx.db.post.findMany({
+          include: {
+            genre: true,
+            createdBy: true,
+            hashtags: true,
+          },
+        });
+      }
+
+      const genrePosts = await ctx.db.post.findMany({
+        where: {
+          genre: {
+            id: {
+              in: user.genres.map((genre) => genre.id),
+            },
+          },
+        },
+        include: {
+          genre: true,
+          createdBy: true,
+          hashtags: true,
+        },
+      });
+
+      const hashtagPosts = await ctx.db.post.findMany({
+        where: {
+          hashtags: {
+            some: {
+              id: {
+                in: user.hashtags.map((hashtag) => hashtag.id),
+              },
+            },
+          },
+        },
+        include: {
+          genre: true,
+          createdBy: true,
+          hashtags: true,
+        },
+      });
+
+      const filteredPosts = [...genrePosts, ...hashtagPosts];
+
+      const uniquePosts = Array.from(
+        new Set(filteredPosts.map((post) => post.id)),
+      ).map((id) => {
+        return filteredPosts.find((post) => post.id === id);
+      });
+
+      return uniquePosts;
+    }),
 });

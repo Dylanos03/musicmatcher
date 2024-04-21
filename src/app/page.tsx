@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import Feed from "./_components/home/feed";
 
 export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
-    <main className="flex min-h-svh flex-col items-center gap-4 bg-background p-2 text-foreground">
+    <main className="flex min-h-screen flex-col items-center gap-4 bg-background p-2 text-foreground">
       <h1 className="text-3xl font-bold">Music Matcher</h1>
 
       <Link
@@ -15,7 +16,8 @@ export default async function Home() {
       >
         {session ? "Sign out" : "Sign in"}
       </Link>
-      <div className="absolute bottom-8 flex w-full justify-between p-2">
+      <Feed session={session} />
+      <div className="fixed bottom-8 flex w-full justify-between p-2">
         <Link
           href={"/add-song"}
           className=" rounded-2xl border-2 border-foreground bg-background px-4 py-2 text-foreground"
