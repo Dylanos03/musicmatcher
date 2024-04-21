@@ -49,7 +49,7 @@ function SongCardFeed({ song }: { song: SongCard }) {
         <div className="flex gap-1">
           {song.hashtags.map((hashtag) => (
             <SongFeature
-              key={hashtag.name + " " + song.songName + " " + song.artist}
+              key={hashtag.name + " " + song.songName + " " + song.artist[0]}
               feature={hashtag}
             />
           ))}
