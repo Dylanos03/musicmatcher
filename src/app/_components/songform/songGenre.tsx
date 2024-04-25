@@ -38,7 +38,7 @@ function PickSongGenre({ setValue }: { setValue: UseFormSetValue<formdataS> }) {
     setValue("genre", genre);
   }
   return (
-    <SFormWrapper title={"Pick your genres"}>
+    <SFormWrapper title={"What Genre?"} amount={1}>
       <div className="flex max-w-screen-sm flex-wrap justify-center gap-2">
         {genres?.data?.map((genre) => (
           <GenreBtn

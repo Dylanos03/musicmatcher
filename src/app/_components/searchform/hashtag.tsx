@@ -54,7 +54,7 @@ function PickHashtag({ setValue }: { setValue: UseFormSetValue<formdata> }) {
     }
   }
   return (
-    <FormWrapper amount={5} title={"Pick your mood"}>
+    <FormWrapper amount={5} title={"What are you looking for?"}>
       <div className="flex max-w-screen-sm flex-wrap justify-center gap-2">
         {hashtags?.data?.map((hashtags) => (
           <HashBtn

@@ -59,7 +59,7 @@ function PickSongHashtag({
     }
   }
   return (
-    <SFormWrapper title={"Pick your mood"}>
+    <SFormWrapper title={"Describe the song"} amount={4}>
       <div className="flex max-w-screen-sm flex-wrap justify-center gap-2">
         {hashtags?.data?.map((hashtags) => (
           <HashBtn
