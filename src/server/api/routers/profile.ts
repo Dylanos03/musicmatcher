@@ -56,4 +56,43 @@ export const profileRouter = createTRPCRouter({
         },
       });
     }),
+  savePost: publicProcedure
+    .input(z.object({ postId: z.number(), userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: { id: input.userId },
+        data: {
+          savedPosts: {
+            connect: { id: input.postId },
+          },
+        },
+      });
+    }),
+  isPostSaved: publicProcedure
+    .input(z.object({ postId: z.number(), userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: { id: input.userId },
+        include: { savedPosts: true },
+      });
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const savedPost = user.savedPosts.find(
+        (post) => post.id === input.postId,
+      );
+      return !!savedPost;
+    }),
+  unsavePost: publicProcedure
+    .input(z.object({ postId: z.number(), userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: { id: input.userId },
+        data: {
+          savedPosts: {
+            disconnect: { id: input.postId },
+          },
+        },
+      });
+    }),
 });

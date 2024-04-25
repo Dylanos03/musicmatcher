@@ -20,9 +20,10 @@ model Post {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy   User      @relation(fields: [createdById], references: [id])
+    createdBy   User      @relation("postedBy", fields: [createdById], references: [id])
     createdById String
     hashtags    Hashtag[]
+    savedBy     User[]    @relation("savedBy")
 
     genreId Int
     genre   Genre @relation(fields: [genreId], references: [id])
@@ -65,7 +66,8 @@ model User {
     image         String
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    posts         Post[]    @relation("postedBy")
+    savedPosts    Post[]    @relation("savedBy")
 
     hashtags Hashtag[]
     genres   Genre[]

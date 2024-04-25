@@ -14,6 +14,7 @@ export default {
       },
       animation: {
         "fade-in-bottom": "fade-in-bottom 0.5s ease-out",
+        "fade-out-bottom": "fade-out-bottom 2s ease",
       },
       keyframes: {
         "fade-in-bottom": {
@@ -24,6 +25,24 @@ export default {
           "100%": {
             opacity: "1",
             transform: "translateY(0)",
+          },
+        },
+        "fade-out-bottom": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(20px)",
+          },
+          "25%": {
+            opacity: "1",
+            transform: "translateY(0px)",
+          },
+          "75%": {
+            opacity: "1",
+            transform: "translateY(0px)",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "translateY(20px)",
           },
         },
       },

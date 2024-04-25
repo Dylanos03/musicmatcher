@@ -134,6 +134,30 @@ export const postRouter = createTRPCRouter({
         return filteredPosts.find((post) => post.id === id);
       });
 
-      return uniquePosts;
+      return uniquePosts.slice(0, 10);
+    }),
+  getSavedPosts: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          id: input,
+        },
+        include: {
+          savedPosts: {
+            include: {
+              genre: true,
+              createdBy: true,
+              hashtags: true,
+            },
+          },
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      return user.savedPosts;
     }),
 });

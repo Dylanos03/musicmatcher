@@ -15,7 +15,7 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center gap-4 bg-background p-2 text-foreground">
       <div className="flex w-full items-center justify-between p-4">
         <h1 className="text-3xl font-bold">Music Matcher</h1>
-        <Link href={session ? "/profile" : "/api/auth/signin"}>
+        <Link href={session ? "/saved" : "/api/auth/signin"}>
           {session && <FontAwesomeIcon icon={faBookmark} size={"lg"} />}
         </Link>
         <Link href={session ? "/api/auth/signout" : "/api/auth/signin"}>
