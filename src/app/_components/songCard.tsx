@@ -47,13 +47,16 @@ export default function SongCardFeed({
   const [savedPopUp, setSavedPopUp] = useState<boolean>(false);
   const savePost = api.profile.savePost.useMutation({
     onSuccess: () => {
-      isSaved.refetch();
+      isSaved.refetch().catch((err) => console.error(err));
       setSavedPopUp(true);
+      setTimeout(() => {
+        setSavedPopUp(false);
+      }, 2000);
     },
   });
   const unSavePost = api.profile.unsavePost.useMutation({
     onSuccess: () => {
-      isSaved.refetch();
+      isSaved.refetch().catch((err) => console.error(err));
     },
   });
   const isSaved = api.profile.isPostSaved.useQuery({
