@@ -1,7 +1,7 @@
 function SavedPostPUp() {
   return (
     <div
-      className={` animate-fade-out-bottom fixed bottom-32 right-4 rounded-2xl bg-foreground p-4 font-bold italic text-background`}
+      className={` fixed bottom-24 right-4 animate-fade-out-bottom rounded-2xl bg-foreground p-4 font-bold italic text-background`}
     >
       Saved
     </div>

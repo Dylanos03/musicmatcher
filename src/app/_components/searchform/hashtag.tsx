@@ -38,6 +38,9 @@ function PickHashtag({ setValue }: { setValue: UseFormSetValue<formdata> }) {
 
   function hashtagClickHandler(e: boolean, f: string) {
     if (e) {
+      if (HashtagSelection.length > 4) {
+        return false;
+      }
       setHashtagSelection((prevSelection) => {
         const newSelection = [...prevSelection, f];
         setValue("hashtags", newSelection);

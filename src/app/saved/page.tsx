@@ -11,7 +11,7 @@ async function SavedPage() {
     redirect("/api/auth/signin");
   }
   return (
-    <main className="flex min-h-screen flex-col items-center gap-4 bg-background p-2 text-foreground">
+    <main className="flex min-h-screen flex-col items-center gap-4 bg-background p-2 text-foreground lg:max-w-sm">
       <div className="flex w-full items-center justify-between p-4">
         <Link href={"/"}>
           <FontAwesomeIcon icon={faBackward} size={"lg"} />

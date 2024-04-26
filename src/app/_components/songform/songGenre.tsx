@@ -8,15 +8,19 @@ import { type formdataS } from "./songPage";
 function GenreBtn({
   genre,
   handleGenreClick,
-  selected,
 }: {
   genre: string;
-  handleGenreClick: () => void;
-  selected: boolean;
+  handleGenreClick: (e: boolean, f: string) => boolean;
 }) {
+  const [selected, setSelected] = useState(false);
+  function handleClick() {
+    const response = handleGenreClick(!selected, genre);
+    setSelected(response);
+  }
+
   return (
     <button
-      onClick={() => handleGenreClick()}
+      onClick={handleClick}
       className={
         "rounded-xl border-2 border-foreground p-2 text-sm  lg:text-lg " +
         (selected
@@ -24,28 +28,43 @@ function GenreBtn({
           : " bg-background text-foreground")
       }
     >
-      {genre}
+      {`#${genre}`}
     </button>
   );
 }
 
 function PickSongGenre({ setValue }: { setValue: UseFormSetValue<formdataS> }) {
   const genres = api.genres.getAll.useQuery();
-  const [genreSelection, setGenreSelection] = useState<string>();
+  const [genreSelection, setGenreSelection] = useState<string[]>([]);
 
-  function genreClickHandler(genre: string) {
-    setGenreSelection(genre);
-    setValue("genre", genre);
+  function genreClickHandler(e: boolean, f: string) {
+    if (e) {
+      if (genreSelection.length > 1) {
+        return false;
+      }
+      setGenreSelection((prevSelection) => {
+        const newSelection = [...prevSelection, f];
+        setValue("genre", newSelection);
+        return newSelection;
+      });
+      return true;
+    } else {
+      setGenreSelection((prevSelection) => {
+        const newSelection = prevSelection.filter((genre) => genre !== f);
+        setValue("genre", newSelection);
+        return newSelection;
+      });
+      return false;
+    }
   }
   return (
-    <SFormWrapper title={"What Genre?"} amount={1}>
+    <SFormWrapper title={"What Genre?"} amount={2}>
       <div className="flex max-w-screen-sm flex-wrap justify-center gap-2">
         {genres?.data?.map((genre) => (
           <GenreBtn
             key={genre.name}
             genre={genre.name}
-            handleGenreClick={() => genreClickHandler(genre.name)}
-            selected={genreSelection === genre.name}
+            handleGenreClick={genreClickHandler}
           />
         ))}
       </div>

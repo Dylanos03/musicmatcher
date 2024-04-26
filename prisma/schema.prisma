@@ -25,8 +25,7 @@ model Post {
     hashtags    Hashtag[]
     savedBy     User[]    @relation("savedBy")
 
-    genreId Int
-    genre   Genre @relation(fields: [genreId], references: [id])
+    genre Genre[]
 
     @@index([songName])
 }

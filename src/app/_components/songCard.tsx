@@ -17,18 +17,25 @@ type SongCard = {
   artwork: string;
   songName: string;
   url: string;
-  genre: Genre;
+  genre: Genre[];
   hashtags: Hashtag[];
   createdBy: User;
 };
 
-function SongFeature({ feature }: { feature: Genre | Hashtag }) {
+function SongFeature({
+  feature,
+  hashtag,
+}: {
+  feature: Genre | Hashtag;
+  hashtag?: boolean;
+}) {
   return (
     <div
       className={
         "rounded-xl border-2 border-foreground bg-background px-2 py-1 text-xs text-foreground lg:text-sm"
       }
     >
+      {hashtag && "#"}
       {feature.name}
     </div>
   );
@@ -82,7 +89,7 @@ export default function SongCardFeed({
         animationDelay: `${index * 0.15}s`,
         animationFillMode: "backwards",
       }}
-      className={`animate-fade-in-bottom flex max-w-full flex-col gap-2 rounded-2xl border-2 border-foreground p-3 `}
+      className={`flex max-w-full animate-fade-in-bottom flex-col gap-2 rounded-2xl border-2 border-foreground p-3 `}
     >
       {savedPopUp && <SavedPostPUp />}
       <div className="flex w-full gap-2">
@@ -122,13 +129,19 @@ export default function SongCardFeed({
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex gap-1">
-          <SongFeature feature={song.genre} />
+          {song.genre.map((genre) => (
+            <SongFeature
+              key={genre.name + " " + song.songName + " " + song.artist[0]}
+              feature={genre}
+            />
+          ))}
         </div>
         <div className="flex gap-1">
           {song.hashtags.map((hashtag) => (
             <SongFeature
               key={hashtag.name + " " + song.songName + " " + song.artist[0]}
               feature={hashtag}
+              hashtag
             />
           ))}
         </div>

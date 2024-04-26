@@ -15,7 +15,7 @@ export type formdataS = {
   songName: string;
   artists: string[];
   art: string;
-  genre: string;
+  genre: string[];
   hashtag: string[];
   postedBy: string;
   href: string;
@@ -27,7 +27,7 @@ function SongPage({ session }: { session: Session }) {
       songName: "",
       artists: [],
       art: "",
-      genre: "",
+      genre: [],
       hashtag: [],
       postedBy: session.user.id,
     },
@@ -50,10 +50,10 @@ function SongPage({ session }: { session: Session }) {
     mutate(data);
   };
   return (
-    <main className="flex min-h-svh flex-col items-center justify-center gap-4 bg-background p-2 text-foreground">
+    <main className="flex min-h-svh flex-col items-center justify-center gap-4 bg-background p-2 text-foreground ">
       {loading && <LoadingPost />}
       {step}
-      <div className="my-4 flex w-full max-w-screen-sm justify-between">
+      <div className="my-4 flex w-full max-w-screen-sm justify-between lg:max-w-sm">
         {isFirstPage ? (
           <Link
             className="rounded-xl border-2 bg-background px-4 py-2 text-foreground"

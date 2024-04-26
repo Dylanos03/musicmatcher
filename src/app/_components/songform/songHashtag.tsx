@@ -43,6 +43,9 @@ function PickSongHashtag({
 
   function hashtagClickHandler(e: boolean, f: string) {
     if (e) {
+      if (HashtagSelection.length > 3) {
+        return false;
+      }
       setHashtagSelection((prevSelection) => {
         const newSelection = [...prevSelection, f];
         setValue("hashtag", newSelection);

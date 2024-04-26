@@ -13,7 +13,7 @@ export const postRouter = createTRPCRouter({
         songName: z.string(),
         artists: z.array(z.string()),
         art: z.string(),
-        genre: z.string(),
+        genre: z.array(z.string()),
         hashtag: z.array(z.string()),
         postedBy: z.string(),
         href: z.string(),
@@ -30,13 +30,17 @@ export const postRouter = createTRPCRouter({
       }
 
       const hashtags = [];
+      const genres = [];
 
-      const genres = await ctx.db.genre.findFirst({
-        where: { name: input.genre },
-      });
+      for (const genre of input.genre) {
+        const foundgenres = await ctx.db.genre.findFirst({
+          where: { name: genre },
+        });
 
-      if (!genres) {
-        throw new Error("Genre not found");
+        if (!foundgenres) {
+          throw new Error("Genre not found");
+        }
+        genres.push(foundgenres);
       }
 
       for (const hashtag of input.hashtag) {
@@ -59,9 +63,7 @@ export const postRouter = createTRPCRouter({
             connect: hashtags,
           },
           genre: {
-            connect: {
-              id: genres.id,
-            },
+            connect: genres,
           },
           createdBy: {
             connect: user,
@@ -94,30 +96,28 @@ export const postRouter = createTRPCRouter({
         });
       }
 
-      const genrePosts = await ctx.db.post.findMany({
+      const posts = await ctx.db.post.findMany({
         where: {
-          genre: {
-            id: {
-              in: user.genres.map((genre) => genre.id),
-            },
-          },
-        },
-        include: {
-          genre: true,
-          createdBy: true,
-          hashtags: true,
-        },
-      });
-
-      const hashtagPosts = await ctx.db.post.findMany({
-        where: {
-          hashtags: {
-            some: {
-              id: {
-                in: user.hashtags.map((hashtag) => hashtag.id),
+          AND: [
+            {
+              genre: {
+                some: {
+                  id: {
+                    in: user.genres.map((genre) => genre.id),
+                  },
+                },
               },
             },
-          },
+            {
+              hashtags: {
+                some: {
+                  id: {
+                    in: user.hashtags.map((hashtag) => hashtag.id),
+                  },
+                },
+              },
+            },
+          ],
         },
         include: {
           genre: true,
@@ -126,15 +126,7 @@ export const postRouter = createTRPCRouter({
         },
       });
 
-      const filteredPosts = [...genrePosts, ...hashtagPosts];
-
-      const uniquePosts = Array.from(
-        new Set(filteredPosts.map((post) => post.id)),
-      ).map((id) => {
-        return filteredPosts.find((post) => post.id === id);
-      });
-
-      return uniquePosts.slice(0, 10);
+      return posts.slice(0, 9);
     }),
   getSavedPosts: publicProcedure
     .input(z.string())

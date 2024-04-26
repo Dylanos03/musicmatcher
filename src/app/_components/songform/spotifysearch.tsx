@@ -20,12 +20,14 @@ function SongCard({
   clickHandler: () => void;
 }) {
   return (
-    <div onClick={clickHandler} className="flex max-w-full justify-between">
-      <div className="flex gap-2">
+    <div onClick={clickHandler} className="flex w-full justify-between">
+      <div className="flex w-full gap-2">
         <Image src={image} alt={name} height={100} width={100} />
-        <div className="flex flex-col">
-          <h2 className="elipse whitespace-nowrap text-lg font-bold">{name}</h2>
-          <h3 className="elipse whitespace-nowrap">
+        <div className="flex w-1/2 flex-shrink flex-grow flex-col">
+          <h2 className="overflow-hidden overflow-ellipsis whitespace-nowrap text-lg font-bold">
+            {name}
+          </h2>
+          <h3 className="overflow-hidden overflow-ellipsis whitespace-nowrap">
             {artist.length === 1
               ? artist[0]
               : artist.map((name) => name + ", ")}
@@ -72,13 +74,13 @@ function SpotifySearch({ setValue }: { setValue: UseFormSetValue<formdataS> }) {
   const spotifySearch = api.spotify.search.useQuery(debouncedSearch);
 
   return (
-    <section className="flex w-full flex-col items-center gap-2 p-2">
+    <section className="flex w-full flex-col items-center gap-2 p-2 sm:max-w-sm">
       <h1 className="text-xl font-bold">Search for a song</h1>
       <input
         type="text"
         value={search}
         placeholder="Enter song name..."
-        className="w-full rounded-2xl bg-foreground p-2 text-background focus:outline-none"
+        className="w-full rounded-2xl bg-foreground p-2 text-background focus:outline-none sm:max-w-sm"
         onChange={(e) => setSearch(e.target.value)}
       />
       <div className="flex max-h-96 w-full flex-col gap-2 overflow-y-auto overflow-x-hidden">

@@ -43,10 +43,10 @@ function SearchPage({ session }: { session: Session }) {
   }
 
   return (
-    <main className="flex min-h-svh flex-col items-center justify-center gap-4 bg-background p-2 text-foreground">
+    <main className="flex min-h-svh flex-col items-center justify-center gap-4 bg-background p-2 text-foreground ">
       {loading && <LoadingSelection />}
       {step}
-      <div className="my-4 flex w-full max-w-screen-sm justify-between">
+      <div className="my-4 flex w-full max-w-screen-sm justify-between lg:max-w-sm">
         {isFirstPage ? (
           <Link
             className="rounded-xl border-2 bg-background px-4 py-2 text-foreground"
